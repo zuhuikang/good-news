@@ -9,9 +9,9 @@ Good News is a project about the process of a news story becoming data. A story 
 
 <br><br>
 ### installation plan
-<img width="658" height="734" alt="installation_plan" src="https://github.com/user-attachments/assets/66fc0879-9330-4bbe-a73c-f023644735a5" /><br>
+<img width="300" height="auto" alt="installation_plan" src="https://github.com/user-attachments/assets/66fc0879-9330-4bbe-a73c-f023644735a5" /><br>
 or this(if possible):<br>
-<img width="568" height="714" alt="vertical_throw" src="https://github.com/user-attachments/assets/a6e0a744-556c-4559-8ddf-05bd9bbd2c94" />
+<img width="300" height="auto" alt="vertical_throw" src="https://github.com/user-attachments/assets/a6e0a744-556c-4559-8ddf-05bd9bbd2c94" />
 
 
 
