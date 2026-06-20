@@ -6,6 +6,8 @@ Good News is a project about the process of a news story becoming data. A story 
 <br><br>
 ## setup
 ### nlp using spaCy + TextBlob
+<img width="500" height="auto" alt="spongebob_reductive_abstraction" src="https://github.com/user-attachments/assets/d917e413-d95e-49c4-86ce-ad5f46817df3" />
+
 
 <br><br>
 ### installation plan
