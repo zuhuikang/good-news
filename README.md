@@ -14,7 +14,7 @@ this piece runs across two windows, which i named them as "ping" and "pong". The
 
 - **[pyglet](https://pyglet.readthedocs.io/en/latest/programming_guide/installation.html)**— handles the windows themselves (ping/pong), drawing text on screen, and timing control (the turn-by-turn progression).
 - **[spaCy (`en_core_web_sm`)](https://spacy.io/usage/linguistic-features)** — does the NLP: tokenizing, shape, lemma, pos, tag, is_stop.
-- **[spacytextblob](https://spacy.io/universe/project/spacy-textblob)** — sentiment analysis. spacytextblob uses TextBlob's sentiment engine into the spaCy pipeline so it can be accessed as `doc._.blob`.
+- **[TextBlob + spacytextblob](https://spacy.io/universe/project/spacy-textblob)** — sentiment analysis. spacytextblob uses TextBlob's sentiment engine into the spaCy pipeline so it can be accessed as `doc._.blob`.
 <br><br>
 ### phase 1
 phase1 is about showing the process of a headline turning into data. every stage strips away a bit of the original sentence's specific content and replaces it with something more generic and machine-readable.<br>
