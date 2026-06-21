@@ -9,6 +9,13 @@ Good News is a project about the process of a news story becoming data. A story 
 ## structure: two windows (ping / pong) 
 this piece runs across two windows, which i named them as "ping" and "pong". The point of splitting it this way is to let people witness the computation of each stage in the news-to-data process as a time based sequence. the full sequence a single headline goes through is divided into phase1 and phase2. So far only phase1 has been designed.<br>
 <br>
+
+## python libraries that are being used here (so far)
+
+- **[pyglet](https://pyglet.readthedocs.io/en/latest/programming_guide/installation.html)**— handles the windows themselves (ping/pong), drawing text on screen, and timing control (the turn-by-turn progression).
+- **[spaCy (`en_core_web_sm`)](https://spacy.io/usage/linguistic-features)** — does the NLP: tokenizing, shape, lemma, pos, tag, is_stop.
+- **[TextBlob + spacytextblob](https://spacy.io/universe/project/spacy-textblob)** — sentiment analysis. spacytextblob uses TextBlob's sentiment engine into the spaCy pipeline so it can be accessed as `doc._.blob`.
+<br><br>
 ### phase 1
 phase1 is about showing the process of a headline turning into data. every stage strips away a bit of the original sentence's specific content and replaces it with something more generic and machine-readable.<br>
 <br>
@@ -38,13 +45,6 @@ the part that i need help, is to get it right on the transition part. words appe
 ### phase 2
 this is the part where the final polarity score from phase1 would somehow reach back and mess with the original headline (the one sitting on ping the whole time). but i haven't figure this part out yet. but i'm sure this part won't end up being too complicated to code, just need some figuring this part out conceptually.<br>
 <br><br>
-
-## python libraries that are being used here (so far)
-
-- **[pyglet](https://pyglet.readthedocs.io/en/latest/programming_guide/installation.html)**— handles the windows themselves (ping/pong), drawing text on screen, and timing control (the turn-by-turn progression).
-- **[spaCy (`en_core_web_sm`)](https://spacy.io/usage/linguistic-features)** — does the NLP: tokenizing, shape, lemma, pos, tag, is_stop.
-- **[TextBlob + spacytextblob](https://spacy.io/universe/project/spacy-textblob)** — sentiment analysis. spacytextblob uses TextBlob's sentiment engine into the spaCy pipeline so it can be accessed as `doc._.blob`.
-
 
 ## installation plan
 <img width="300" height="auto" alt="installation_plan" src="https://github.com/user-attachments/assets/66fc0879-9330-4bbe-a73c-f023644735a5" /><br>
