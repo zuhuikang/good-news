@@ -42,6 +42,11 @@ here are the keynote animation outputted as .mp4 for reference what it should lo
 
 the part that i need help, is to get it right on the transition part. words appearing one letter/word at a time (one idea is to visualize it by manipulating the opacity setting, like from 0 to 1), then each stage's word being directly replaced by the next stage's words in place, or hiding the words (this can also be visualized by opacity manipulation, like from 1 to 0). right now the code **[for_thomas.py](https://github.com/zuhuikang/good-news/blob/main/for_thomas.py)** just swapts each stage's text all at once. the word-by-word transition hasn't been implemented yet.
 <br>
+**note on [for_thomas_ver2.py](https://github.com/zuhuikang/good-news/blob/main/for_thomas_ver2.py)**<br>
+so this version uses `pyglet.text.document.FormattedDocument` + `pyglet.text.layout.TextLayout` instead of the simpler `pyglet.text.Label`.<br><br>
+because `Label` can only apply one single color/style to the whole block of text, but what i need for some words need to stay visible, others need to hide out for the desired animated effect. and apparently `FormattedDocument` lets you style specific character ranges individually, so this becomes possible.<br><br>
+i designed the overall logic (which words survive, how sentiment gets matched, when colors change, etc.) myself with the help of my peer, but this specific version implementating `pyglet.text.document.FormattedDocument` + `pyglet.text.layout.TextLayout` was done by claude. since i don't fully understand how this `pyglet.text.document.FormattedDocument` + `pyglet.text.layout.TextLayout` things work yet.. so if anything in here looks unnecessarily roundabout or wrong, that's probably where it's coming from.<br>
+<br>
 ### phase 2
 this is the part where the final polarity score from phase1 would somehow reach back and mess with the original headline (the one sitting on ping the whole time). but i haven't figure this part out yet. but i'm sure this part won't end up being too complicated to code, just need some figuring this part out conceptually.<br>
 <br><br>
