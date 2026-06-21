@@ -38,7 +38,15 @@ the part that i need help, is to get it right on the transition part. words appe
 ### phase 2
 this is the part where the final polarity score from phase1 would somehow reach back and mess with the original headline (the one sitting on ping the whole time). but i haven't figure this part out yet. but i'm sure this part won't end up being too complicated to code, just need some figuring this part out conceptually.<br>
 <br><br>
-### installation plan
+
+## python libraries that are being used here (so far)
+
+- **pyglet** (https://pyglet.readthedocs.io/en/latest/programming_guide/installation.html)— handles the windows themselves (ping/pong), drawing text on screen, and timing control (the turn-by-turn progression).
+- **spaCy** (`en_core_web_sm`) (https://spacy.io/usage/linguistic-features) — does the NLP: tokenizing, shape, lemma, pos, tag, is_stop.
+- **TextBlob** + **spacytextblob** (https://spacy.io/universe/project/spacy-textblob) — sentiment analysis. spacytextblob uses TextBlob's sentiment engine into the spaCy pipeline so it can be accessed as `doc._.blob`.
+
+
+## installation plan
 <img width="300" height="auto" alt="installation_plan" src="https://github.com/user-attachments/assets/66fc0879-9330-4bbe-a73c-f023644735a5" /><br>
 or this(if possible):<br>
 <img width="300" height="auto" alt="vertical_throw" src="https://github.com/user-attachments/assets/a6e0a744-556c-4559-8ddf-05bd9bbd2c94" />
