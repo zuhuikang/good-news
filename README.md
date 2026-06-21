@@ -16,14 +16,14 @@ the sequence goes:
 
 1. original headline
 2. headline → `shape`
-3. headline → `lemma`
-4. headline → `pos`
-5. headline → `tag`
-6. headline → `is_stop` (shown as True/False per token)
-7. is_stop result applied: `True` tokens shown as `shape`, `False` tokens shown as the original word
-8. only the words picked up by sentiment assessments are kept; the rest disappear
+3. `shape` headline → `lemma`
+4. `lemma` headline → `pos`
+5. `pos` headline → `tag`
+6. `tag` headline → `is_stop` (shown as True/False per token)
+7. `is_stop` result applied: `True` tokens shown as `shape`, `False` tokens shown as the original word
+8. only the words picked up by `sentiment assessments` are kept; the rest disappear
 9. those surviving words shown with their individual sentiment scores
-10. final polarity score
+10. final `polarity score`
 
 every stage is just the raw output from spaCy and TextBlob. the whole point of this visualization is to make that reductive abstraction(language getting flattened into data) more visible.<br>
 <br>
