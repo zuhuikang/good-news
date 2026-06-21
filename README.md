@@ -48,6 +48,7 @@ the part that i need help, is to get it right on the transition part. words appe
 > i designed the overall logic (which words survive, how sentiment gets matched, when colors change, etc.) myself with the help of my peer, but this specific version implementating `pyglet.text.document.FormattedDocument` + `pyglet.text.layout.TextLayout` was done by claude. since i don't fully understand how this `pyglet.text.document.FormattedDocument` + `pyglet.text.layout.TextLayout` things work yet.. so if anything in here looks unnecessarily roundabout or wrong, that's probably where it's coming from.<br>
 <br>
 
+
 ### phase 2
 this is the part where the final polarity score from phase1 would somehow reach back and mess with the original headline (the one sitting on ping the whole time). but i haven't figure this part out yet. but i'm sure this part won't end up being too complicated to code, just need some figuring this part out conceptually.<br>
 <br><br>
