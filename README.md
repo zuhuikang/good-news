@@ -33,7 +33,7 @@ here are the keynote animation outputted as .mp4 for reference what it should lo
 - [phase1-example1.mp4](https://github.com/zuhuikang/good-news/blob/main/reference/phase1-example1.mp4) 
 - [phase1-example2.mp4](https://github.com/zuhuikang/good-news/blob/main/reference/phase1-example2.mp4)
 
-the part that i need help, is to get it right on the transition part. words appearing one letter/word at a time (one idea is to visualize it by manipulating the opacity setting, like from 0 to 1), then each stage's word being directly replaced by the next stage's words in place, or hiding the words (this can also be visualized by opacity manipulation, like from 1 to 0). right now the code just swapts each stage's text all at once. the word-by-word transition hasn't been implemented yet.
+the part that i need help, is to get it right on the transition part. words appearing one letter/word at a time (one idea is to visualize it by manipulating the opacity setting, like from 0 to 1), then each stage's word being directly replaced by the next stage's words in place, or hiding the words (this can also be visualized by opacity manipulation, like from 1 to 0). right now the code **[for_thomas.py](https://github.com/zuhuikang/good-news/blob/main/for_thomas.py)** just swapts each stage's text all at once. the word-by-word transition hasn't been implemented yet.
 <br>
 ### phase 2
 this is the part where the final polarity score from phase1 would somehow reach back and mess with the original headline (the one sitting on ping the whole time). but i haven't figure this part out yet. but i'm sure this part won't end up being too complicated to code, just need some figuring this part out conceptually.<br>
@@ -41,9 +41,9 @@ this is the part where the final polarity score from phase1 would somehow reach 
 
 ## python libraries that are being used here (so far)
 
-- **pyglet** (https://pyglet.readthedocs.io/en/latest/programming_guide/installation.html)— handles the windows themselves (ping/pong), drawing text on screen, and timing control (the turn-by-turn progression).
-- **spaCy** (`en_core_web_sm`) (https://spacy.io/usage/linguistic-features) — does the NLP: tokenizing, shape, lemma, pos, tag, is_stop.
-- **TextBlob** + **spacytextblob** (https://spacy.io/universe/project/spacy-textblob) — sentiment analysis. spacytextblob uses TextBlob's sentiment engine into the spaCy pipeline so it can be accessed as `doc._.blob`.
+- **[pyglet](https://pyglet.readthedocs.io/en/latest/programming_guide/installation.html)**— handles the windows themselves (ping/pong), drawing text on screen, and timing control (the turn-by-turn progression).
+- **[spaCy (`en_core_web_sm`)](https://spacy.io/usage/linguistic-features)** — does the NLP: tokenizing, shape, lemma, pos, tag, is_stop.
+- **[TextBlob + spacytextblob](https://spacy.io/universe/project/spacy-textblob)** — sentiment analysis. spacytextblob uses TextBlob's sentiment engine into the spaCy pipeline so it can be accessed as `doc._.blob`.
 
 
 ## installation plan
