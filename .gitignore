@@ -1,0 +1,58 @@
+# --- Virtual environments ---
+.venv/
+venv/
+env/
+ENV/
+
+# --- Python bytecode / cache ---
+__pycache__/
+*.py[cod]
+*$py.class
+
+# --- Distribution / packaging ---
+build/
+dist/
+*.egg-info/
+*.egg
+.eggs/
+
+# --- Testing / coverage ---
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+
+# --- Type checkers / linters ---
+.mypy_cache/
+.ruff_cache/
+.dmypy.json
+
+# --- Jupyter ---
+.ipynb_checkpoints/
+
+# --- Environment variables / secrets ---
+.env
+.env.*
+*.local
+
+# --- Logs ---
+*.log
+
+# --- macOS ---
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+
+# --- Editors / IDEs ---
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# --- spaCy / NLP model caches (if downloaded outside requirements.txt) ---
+*.whl
