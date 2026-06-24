@@ -1,7 +1,6 @@
 from pyglet.text.document import FormattedDocument
 from pyglet.text.layout import TextLayout
 
-from for_thomas_ver2 import FONT_SIZE
 from for_zuhui.constants import (
     FONT_NAME,
     HEADLINE_FONT_SIZE,
@@ -38,8 +37,10 @@ class Headline(Renderable):
     def render(self):
         return self.headlineTextLayout.draw()
 
-    def renderSequence(self, dt):
-        pass
+    def resize(self, width: int, height: int) -> None:
+        self.headlineTextLayout.x = width // 2
+        self.headlineTextLayout.y = height // 2
+        self.headlineTextLayout.width = width - 300
 
     def getLayout(self):
         return self.headlineTextLayout

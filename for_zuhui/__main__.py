@@ -7,8 +7,6 @@ from for_zuhui.logic import Color, loadHeadlinesWithSource
 from for_zuhui.sourceline import SourceLine
 from for_zuhui.window import Window
 
-print("Starting the application...")
-
 nlp = spacy.load("en_core_web_sm")
 nlp.add_pipe("spacytextblob")
 

@@ -27,3 +27,10 @@ class SourceLine(Renderable):
 
     def render(self):
         return self.sourceTextLayout.draw()
+
+    def resize(self, width: int, height: int) -> None:
+        self.sourceTextLayout.x = width // 2
+        self.sourceTextLayout.y = 70
+
+    def getLayout(self):
+        return self.sourceTextLayout

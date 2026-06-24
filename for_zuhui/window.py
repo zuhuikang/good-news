@@ -1,10 +1,9 @@
 from typing import List
-
+import pyglet
 from pyglet.gl import glClearColor
 from pyglet.window import Window as PygletWindow
-from pyglet.text.layout import TextLayout
 
-from for_zuhui.headline import Headline
+
 from for_zuhui.logic import Color, Renderable
 
 
@@ -30,7 +29,9 @@ class Window:
             item.render()
 
     def on_resize(self, width, height):
-        pass
+        for item in self.content:
+            item.resize(width, height)
 
     def on_key_press(self, symbol, modifiers):
-        pass
+        if symbol == pyglet.window.key.F:
+            self.window.set_fullscreen(not self.window.fullscreen)

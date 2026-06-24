@@ -31,6 +31,14 @@ class Renderable(ABC):
     def render(self) -> None:
         pass
 
+    @abstractmethod
+    def getLayout(self) -> TextLayout:
+        pass
+
+    @abstractmethod
+    def resize(self, width: int, height: int) -> None:
+        pass
+
 
 def loadHeadlinesWithSource():
     current_dir = Path(__file__).parent
