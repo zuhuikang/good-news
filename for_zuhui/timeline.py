@@ -65,6 +65,6 @@ class DelayAnimation(Animation):
         self._currentTime = 0
 
     def update(self, dt: float) -> None:
-        self._currentTime += dt * 1000  # convert seconds to milliseconds
+        self._currentTime += dt * 1000
         if self._currentTime >= self._delayMs:
             self._completed = True

@@ -54,8 +54,8 @@ pong = Window(
     resizable=True,
 )
 
+# all delays are in milliseconds (1000 ms = 1 second)
 
-# timeline:
 timeline = Timeline()
 timeline.wait(1000)
 timeline.addAnimation(
@@ -76,7 +76,6 @@ timeline.wait(2000)
 timeline.addAnimation(SequentialPartReplaceAnimation(headlinePong, getNLPIsStop, 150))
 
 
-# This is the main animation loop.
 def loop(dt: float) -> None:
     timeline.update(dt)
 
