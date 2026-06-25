@@ -4,7 +4,13 @@ import pyglet
 from for_zuhui.constants import WINDOW_HEIGHT, WINDOW_WIDTH
 from for_zuhui.headline import Headline
 from for_zuhui.logic import Color, loadHeadlinesWithSource
-from for_zuhui.nlp_processors import getNLPShape
+from for_zuhui.nlp_processors import (
+    getNLPIsStop,
+    getNLPLemma,
+    getNLPPos,
+    getNLPShape,
+    getNLPTag,
+)
 from for_zuhui.sourceline import SourceLine
 from for_zuhui.text_animations import (
     SequentialPartReplaceAnimation,
@@ -51,13 +57,23 @@ pong = Window(
 
 # timeline:
 timeline = Timeline()
+timeline.wait(1000)
 timeline.addAnimation(
     ParallelAnimations(
         [StaggerInAnimation(headlinePing, 250), StaggerInAnimation(headlinePong, 250)]
     )
 )
 timeline.addAnimation(ShowRenderableAnimation(sourcelinePing, 250))
-timeline.addAnimation(SequentialPartReplaceAnimation(headlinePong, getNLPShape, 250))
+timeline.wait(2000)
+timeline.addAnimation(SequentialPartReplaceAnimation(headlinePong, getNLPShape, 150))
+timeline.wait(2000)
+timeline.addAnimation(SequentialPartReplaceAnimation(headlinePong, getNLPLemma, 150))
+timeline.wait(2000)
+timeline.addAnimation(SequentialPartReplaceAnimation(headlinePong, getNLPPos, 150))
+timeline.wait(2000)
+timeline.addAnimation(SequentialPartReplaceAnimation(headlinePong, getNLPTag, 150))
+timeline.wait(2000)
+timeline.addAnimation(SequentialPartReplaceAnimation(headlinePong, getNLPIsStop, 150))
 
 
 # This is the main animation loop.

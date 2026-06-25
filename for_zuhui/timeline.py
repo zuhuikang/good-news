@@ -11,6 +11,9 @@ class Timeline:
     def addAnimation(self, animation: Animation):
         self.animations.append(animation)
 
+    def wait(self, delayMs: int):
+        self.addAnimation(DelayAnimation(delayMs))
+
     def update(self, dt):
         self.currentTime += dt
 
@@ -52,4 +55,16 @@ class ParallelAnimations(Animation):
                 animation.update(dt)
 
         if all(animation.completed for animation in self.animations):
+            self._completed = True
+
+
+class DelayAnimation(Animation):
+    def __init__(self, delayMs: int):
+        super().__init__()
+        self._delayMs = delayMs
+        self._currentTime = 0
+
+    def update(self, dt: float) -> None:
+        self._currentTime += dt * 1000  # convert seconds to milliseconds
+        if self._currentTime >= self._delayMs:
             self._completed = True
