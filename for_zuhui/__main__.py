@@ -1,18 +1,18 @@
 import pyglet
-import spacy
-from spacytextblob.spacytextblob import SpacyTextBlob
 
 
 from for_zuhui.constants import WINDOW_HEIGHT, WINDOW_WIDTH
 from for_zuhui.headline import Headline
 from for_zuhui.logic import Color, loadHeadlinesWithSource
+from for_zuhui.nlp_processors import getNLPShape
 from for_zuhui.sourceline import SourceLine
-from for_zuhui.text_animations import ShowRenderableAnimation, StaggerInAnimation
+from for_zuhui.text_animations import (
+    SequentialPartReplaceAnimation,
+    ShowRenderableAnimation,
+    StaggerInAnimation,
+)
 from for_zuhui.timeline import ParallelAnimations, Timeline
 from for_zuhui.window import Window
-
-nlp = spacy.load("en_core_web_sm")
-nlp.add_pipe("spacytextblob")
 
 headlines = loadHeadlinesWithSource()
 primaryColor = Color(0.156, 0.233, 0.920, 1)
@@ -57,6 +57,7 @@ timeline.addAnimation(
     )
 )
 timeline.addAnimation(ShowRenderableAnimation(sourcelinePing, 250))
+timeline.addAnimation(SequentialPartReplaceAnimation(headlinePong, getNLPShape, 250))
 
 
 # This is the main animation loop.
