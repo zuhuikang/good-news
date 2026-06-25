@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 from random import random
 from pyglet.text.layout import TextLayout
+from pyglet.text.document import FormattedDocument
 
 
 class Color:
@@ -36,7 +37,15 @@ class Renderable(ABC):
         pass
 
     @abstractmethod
+    def getDocument(self) -> FormattedDocument:
+        pass
+
+    @abstractmethod
     def resize(self, width: int, height: int) -> None:
+        pass
+
+    @abstractmethod
+    def getColor(self) -> Color:
         pass
 
 

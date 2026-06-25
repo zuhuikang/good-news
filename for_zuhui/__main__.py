@@ -7,7 +7,7 @@ from for_zuhui.constants import WINDOW_HEIGHT, WINDOW_WIDTH
 from for_zuhui.headline import Headline
 from for_zuhui.logic import Color, loadHeadlinesWithSource
 from for_zuhui.sourceline import SourceLine
-from for_zuhui.text_animations import StaggerInAnimation
+from for_zuhui.text_animations import ShowRenderableAnimation, StaggerInAnimation
 from for_zuhui.timeline import ParallelAnimations, Timeline
 from for_zuhui.window import Window
 
@@ -56,7 +56,7 @@ timeline.addAnimation(
         [StaggerInAnimation(headlinePing, 250), StaggerInAnimation(headlinePong, 250)]
     )
 )
-# timeline.addAnimation()
+timeline.addAnimation(ShowRenderableAnimation(sourcelinePing, 250))
 
 
 # This is the main animation loop.

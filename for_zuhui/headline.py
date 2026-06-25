@@ -51,3 +51,6 @@ class Headline(Renderable):
 
     def getDocument(self):
         return self._headlineDoc
+
+    def getColor(self) -> Color:
+        return self._color
