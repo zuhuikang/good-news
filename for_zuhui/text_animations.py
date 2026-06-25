@@ -23,6 +23,9 @@ class StaggerInAnimation(Animation):
             0, limit, dict(color=self._headline.getColor().get_rgba())
         )
 
+    def start(self) -> None:
+        super().start()
+
     def update(self, dt: float) -> None:
         self._currentTime += dt * 1000
         while self._currentTime >= self._staggerDelay:
@@ -43,6 +46,9 @@ class ShowRenderableAnimation(Animation):
         self._renderable.getDocument().set_style(
             0, len(self._renderable.getDocument().text), dict(color=(0, 0, 0, 0))
         )
+
+    def start(self) -> None:
+        return super().start()
 
     def update(self, dt: float) -> None:
         self._currentTime += dt * 1000
@@ -68,8 +74,12 @@ class SequentialPartReplaceAnimation(Animation):
         self._replaceDelay = replaceDelay
         self._replacementParts = replacer(headline.text)
         self._currentTime = 0
-        self._parts = self._headline.text.split(" ")
+        self._parts = []
         self._currentPartIndex = 0
+
+    def start(self) -> None:
+        super().start()
+        self._parts = self._headline.getDocument().text.split(" ")
 
     def update(self, dt: float) -> None:
         self._currentTime += dt * 1000
