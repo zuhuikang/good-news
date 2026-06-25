@@ -1,10 +1,14 @@
 import pyglet
 import spacy
 from spacytextblob.spacytextblob import SpacyTextBlob
+
+
 from for_zuhui.constants import WINDOW_HEIGHT, WINDOW_WIDTH
 from for_zuhui.headline import Headline
 from for_zuhui.logic import Color, loadHeadlinesWithSource
 from for_zuhui.sourceline import SourceLine
+from for_zuhui.text_animations import StaggerInAnimation
+from for_zuhui.timeline import ParallelAnimations, Timeline
 from for_zuhui.window import Window
 
 nlp = spacy.load("en_core_web_sm")
@@ -14,12 +18,12 @@ headlines = loadHeadlinesWithSource()
 primaryColor = Color(0.156, 0.233, 0.920, 1)
 
 headlinePing = Headline(
-    headline=headlines[0]["title"],
+    text=headlines[0]["title"],
     color=primaryColor.get_complementary(),
     renderWidth=WINDOW_WIDTH - 300,
 )
 headlinePong = Headline(
-    headline=headlines[0]["title"], color=primaryColor, renderWidth=WINDOW_WIDTH - 300
+    text=headlines[0]["title"], color=primaryColor, renderWidth=WINDOW_WIDTH - 300
 )
 
 sourcelinePing = SourceLine(
@@ -45,9 +49,20 @@ pong = Window(
 )
 
 
-def update(dt):
-    pass
+# timeline:
+timeline = Timeline()
+timeline.addAnimation(
+    ParallelAnimations(
+        [StaggerInAnimation(headlinePing, 250), StaggerInAnimation(headlinePong, 250)]
+    )
+)
+# timeline.addAnimation()
 
 
-pyglet.clock.schedule_interval(update, 1 / 60.0)  # at 60fps
+# This is the main animation loop.
+def loop(dt: float) -> None:
+    timeline.update(dt)
+
+
+pyglet.clock.schedule_interval(loop, 1 / 60.0)  # at 60fps
 pyglet.app.run()
