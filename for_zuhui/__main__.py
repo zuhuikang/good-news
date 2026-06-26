@@ -74,6 +74,10 @@ timeline.wait(2000)
 timeline.addAnimation(SequentialPartReplaceAnimation(headlinePong, getNLPTag, 150))
 timeline.wait(2000)
 timeline.addAnimation(SequentialPartReplaceAnimation(headlinePong, getNLPIsStop, 150))
+timeline.wait(2000)
+timeline.addAnimation(
+    SequentialPartReplaceAnimation(headlinePong, [getNLPShape, getNLPLemma], 150)
+)
 
 
 def loop(dt: float) -> None:
