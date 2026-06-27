@@ -11,17 +11,17 @@ from for_zuhui.logic import Color, Renderable
 
 
 class Headline(Renderable):
-    def __init__(self, headline: str, color: Color, renderWidth: int):
-        self.headlineDoc = FormattedDocument(headline)
-        self.headlineTextLayout = TextLayout(
-            self.headlineDoc, width=renderWidth, multiline=True
+    def __init__(self, text: str, color: Color, renderWidth: int):
+        self._headlineDoc = FormattedDocument(text)
+        self._headlineTextLayout = TextLayout(
+            self._headlineDoc, width=renderWidth, multiline=True
         )
-        self.headline = headline
-        self.color = color
+        self._text = text
+        self._color = color
 
-        self.headlineDoc.set_style(
+        self._headlineDoc.set_style(
             0,
-            len(headline),
+            len(text),
             dict(
                 color=color.get_rgba(),
                 font_name=FONT_NAME,
@@ -29,21 +29,28 @@ class Headline(Renderable):
                 align="center",
             ),
         )
-        self.headlineTextLayout.x = WINDOW_WIDTH // 2
-        self.headlineTextLayout.y = WINDOW_HEIGHT // 2
-        self.headlineTextLayout.anchor_x = "center"
-        self.headlineTextLayout.anchor_y = "center"
+        self._headlineTextLayout.x = WINDOW_WIDTH // 2
+        self._headlineTextLayout.y = WINDOW_HEIGHT // 2
+        self._headlineTextLayout.anchor_x = "center"
+        self._headlineTextLayout.anchor_y = "center"
 
     def render(self):
-        return self.headlineTextLayout.draw()
+        return self._headlineTextLayout.draw()
 
     def resize(self, width: int, height: int) -> None:
-        self.headlineTextLayout.x = width // 2
-        self.headlineTextLayout.y = height // 2
-        self.headlineTextLayout.width = width - 300
+        self._headlineTextLayout.x = width // 2
+        self._headlineTextLayout.y = height // 2
+        self._headlineTextLayout.width = width - 300
+
+    @property
+    def text(self):
+        return self._text
 
     def getLayout(self):
-        return self.headlineTextLayout
+        return self._headlineTextLayout
 
     def getDocument(self):
-        return self.headlineDoc
+        return self._headlineDoc
+
+    def getColor(self) -> Color:
+        return self._color

@@ -7,14 +7,15 @@ from for_zuhui.logic import Color, Renderable
 
 class SourceLine(Renderable):
     def __init__(self, source: str, color: Color):
-        self.sourceDoc = FormattedDocument(source)
-        self.sourceTextLayout = TextLayout(self.sourceDoc)
-        self.sourceTextLayout.x = WINDOW_WIDTH // 2
-        self.sourceTextLayout.y = 70
-        self.sourceTextLayout.anchor_x = "center"
-        self.sourceTextLayout.anchor_y = "bottom"
+        self._color = color
+        self._sourceDoc = FormattedDocument(source)
+        self._sourceTextLayout = TextLayout(self._sourceDoc)
+        self._sourceTextLayout.x = WINDOW_WIDTH // 2
+        self._sourceTextLayout.y = 70
+        self._sourceTextLayout.anchor_x = "center"
+        self._sourceTextLayout.anchor_y = "bottom"
 
-        self.sourceDoc.set_style(
+        self._sourceDoc.set_style(
             0,
             len(source),
             dict(
@@ -26,11 +27,17 @@ class SourceLine(Renderable):
         )
 
     def render(self):
-        return self.sourceTextLayout.draw()
+        return self._sourceTextLayout.draw()
 
     def resize(self, width: int, height: int) -> None:
-        self.sourceTextLayout.x = width // 2
-        self.sourceTextLayout.y = 70
+        self._sourceTextLayout.x = width // 2
+        self._sourceTextLayout.y = 70
 
     def getLayout(self):
-        return self.sourceTextLayout
+        return self._sourceTextLayout
+
+    def getDocument(self):
+        return self._sourceDoc
+
+    def getColor(self):
+        return self._color
