@@ -4,6 +4,8 @@ from random import random
 from pyglet.text.layout import TextLayout
 from pyglet.text.document import FormattedDocument
 
+from for_zuhui.nlp_processors import getNLPSentiment
+
 
 class Color:
     def __init__(self, r=None, g=None, b=None, a=None):
@@ -66,3 +68,10 @@ def loadHeadlinesWithSource():
             else:
                 headLines.append({"title": line.strip(), "source": ""})
         return headLines
+
+
+def getSentimentTexts(
+    text: str,
+) -> list[list[str]]:
+    sentiments = getNLPSentiment(text)
+    return [sentiment[0] for sentiment in sentiments]

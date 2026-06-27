@@ -30,6 +30,11 @@ def getNLPIsStop(text: str) -> list[str]:
     return [str(token.is_stop) for token in doc]
 
 
+def getNLPSentiment(text: str) -> list[tuple[list[str], float, float, str]]:
+    doc = nlp(text)
+    return doc._.blob.sentiment_assessments.assessments
+
+
 # check what turn 7 does
 
 

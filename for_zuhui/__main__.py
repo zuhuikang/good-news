@@ -3,19 +3,22 @@ import pyglet
 
 from for_zuhui.constants import WINDOW_HEIGHT, WINDOW_WIDTH
 from for_zuhui.headline import Headline
-from for_zuhui.logic import Color, loadHeadlinesWithSource
+from for_zuhui.logic import Color, getSentimentTexts, loadHeadlinesWithSource
 from for_zuhui.nlp_processors import (
     getNLPIsStop,
     getNLPLemma,
     getNLPPos,
+    getNLPSentiment,
     getNLPShape,
     getNLPTag,
 )
 from for_zuhui.sourceline import SourceLine
 from for_zuhui.text_animations import (
+    ListSentimentRatingsAnimation,
     SequentialPartReplaceAnimation,
     ShowRenderableAnimation,
     StaggerInAnimation,
+    ToSpecificPartsAnimation,
 )
 from for_zuhui.timeline import ParallelAnimations, Timeline
 from for_zuhui.window import Window
@@ -76,8 +79,12 @@ timeline.wait(2000)
 timeline.addAnimation(SequentialPartReplaceAnimation(headlinePong, getNLPIsStop, 150))
 timeline.wait(2000)
 timeline.addAnimation(
-    SequentialPartReplaceAnimation(headlinePong, [getNLPShape, getNLPLemma], 150)
+    SequentialPartReplaceAnimation(headlinePong, [getNLPShape, getNLPLemma], 150, False)
 )
+timeline.wait(2000)
+timeline.addAnimation(ToSpecificPartsAnimation(headlinePong, getSentimentTexts, 150))
+timeline.wait(2000)
+timeline.addAnimation(ListSentimentRatingsAnimation(headlinePong, getNLPSentiment, 150))
 
 
 def loop(dt: float) -> None:

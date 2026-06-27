@@ -1,5 +1,7 @@
 from typing import Callable
 
+from spacy import tokens
+
 from for_zuhui.headline import Headline
 from for_zuhui.logic import Renderable
 from for_zuhui.timeline import Animation
@@ -159,5 +161,159 @@ class SequentialPartReplaceAnimation(Animation):
             self._headline.getDocument().text = " ".join(self._parts)
             self._currentPartIndex += 1
             if self._currentPartIndex >= len(self._replacementParts):
+                self._completed = True
+                break
+
+
+class ToSpecificPartsAnimation(Animation):
+    def __init__(
+        self,
+        headline: Headline,
+        getParts: Callable[[str], list[list[str]]],
+        animDelay: int,
+    ) -> None:
+        super().__init__()
+        self._headline = headline
+        self._currentTime = 0
+        self._animDelay = animDelay
+        self._parts = []
+        self._hiddenIndices: set[int] = set()
+        self._headlineParts = self._headline.text.split(" ")
+        self._sentimentParts = getParts(self._headline.text)
+        self._desiredIndicies = self.get_desired_part_indicies()
+        self._currentPartIndex = 0
+
+    def get_desired_part_indicies(self) -> set[int]:
+        desiredParts = set()
+        for words in self._sentimentParts:
+            n = len(words)
+            for i in range(len(self._headlineParts) - n + 1):
+                if self._headlineParts[i : i + n] == words:
+                    for j in range(i, i + n):
+                        desiredParts.add(j)
+
+        print(desiredParts)
+        return desiredParts
+
+    def start(self) -> None:
+        super().start()
+        self._parts = self._headline.getDocument().text.split(" ")
+        if len(self._parts) != len(self._headlineParts):
+            raise ValueError(
+                "ToSpecificPartsAnimation requires the number of parts to match the headline"
+            )
+        self._apply_parts_styles()
+
+    def _apply_parts_styles(self) -> None:
+        document = self._headline.getDocument()
+
+        visibleColor = self._headline.getColor().get_rgba()
+        hiddenColor = (visibleColor[0], visibleColor[1], visibleColor[2], 0)
+
+        cursor = 0
+        for idx, part in enumerate(self._parts):
+            start = cursor
+            end = start + len(part)
+            document.set_style(
+                start,
+                end,
+                dict(color=hiddenColor if idx in self._hiddenIndices else visibleColor),
+            )
+            cursor = end + 1
+
+    def _replace_part_at_index(self, idx: int, newPart: str) -> None:
+        document = self._headline.getDocument()
+
+        start = 0
+        for i in range(idx):
+            start += len(self._parts[i]) + 1
+        end = start + len(self._parts[idx])
+
+        document.delete_text(start, end)
+        document.insert_text(start, newPart)
+        self._parts[idx] = newPart
+
+        print(document.text)
+
+    def update(self, dt: float) -> None:
+        self._currentTime += dt * 1000
+        while self._currentTime >= self._animDelay:
+            self._currentTime -= self._animDelay
+
+            if self._currentPartIndex >= len(self._parts):
+                self._completed = True
+                break
+
+            idx = self._currentPartIndex
+            if idx in self._desiredIndicies:
+                if self._parts[idx] != self._headlineParts[idx]:
+                    self._replace_part_at_index(idx, self._headlineParts[idx])
+            else:
+                self._hiddenIndices.add(idx)
+
+            self._apply_parts_styles()
+            self._currentPartIndex += 1
+
+            if self._currentPartIndex >= len(self._parts):
+                self._completed = True
+                break
+
+
+class ListSentimentRatingsAnimation(Animation):
+    def __init__(
+        self,
+        headline: Headline,
+        getSentiments: Callable[[str], list[tuple[list[str], float, float, str]]],
+        itemDelay: int,
+    ) -> None:
+        super().__init__()
+        self._headline = headline
+        self._getSentiments = getSentiments
+        self._sentimentPhrases: list[str] = []
+        self._itemDelay = itemDelay
+        self._currentTime = 0
+        self._currentPhraseIndex = 0
+
+    def _build_sentiment_phrases(self, text: str) -> list[str]:
+        sentiments = self._getSentiments(text)
+        return [
+            f"{' '.join(words)} {polarity:.2f}" for words, polarity, _, _ in sentiments
+        ]
+
+    def start(self) -> None:
+        super().start()
+        self._sentimentPhrases = self._build_sentiment_phrases(self._headline.text)
+        document = self._headline.getDocument()
+
+        if not self._sentimentPhrases:
+            document.text = ""
+            self._completed = True
+            return
+
+        document.text = self._sentimentPhrases[0]
+        document.set_style(
+            0,
+            len(document.text),
+            dict(color=self._headline.getColor().get_rgba()),
+        )
+        self._currentPhraseIndex = 1
+
+    def update(self, dt: float) -> None:
+        self._currentTime += dt * 1000
+        while self._currentTime >= self._itemDelay:
+            self._currentTime -= self._itemDelay
+
+            if self._currentPhraseIndex >= len(self._sentimentPhrases):
+                self._completed = True
+                break
+
+            document = self._headline.getDocument()
+            line = self._sentimentPhrases[self._currentPhraseIndex]
+            if document.text:
+                document.text += "\n"
+            document.text += line
+
+            self._currentPhraseIndex += 1
+            if self._currentPhraseIndex >= len(self._sentimentPhrases):
                 self._completed = True
                 break
