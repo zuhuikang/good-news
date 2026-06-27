@@ -192,7 +192,6 @@ class ToSpecificPartsAnimation(Animation):
                     for j in range(i, i + n):
                         desiredParts.add(j)
 
-        print(desiredParts)
         return desiredParts
 
     def start(self) -> None:
@@ -232,8 +231,6 @@ class ToSpecificPartsAnimation(Animation):
         document.delete_text(start, end)
         document.insert_text(start, newPart)
         self._parts[idx] = newPart
-
-        print(document.text)
 
     def update(self, dt: float) -> None:
         self._currentTime += dt * 1000

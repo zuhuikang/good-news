@@ -1,9 +1,17 @@
 import pyglet
 
 
-from for_zuhui.constants import WINDOW_HEIGHT, WINDOW_WIDTH
+from for_zuhui.constants import (
+    ANIMATIONS_DELAY,
+    WINDOW_HEIGHT,
+    WINDOW_WIDTH,
+    WORD_ANIMATION_DELAY,
+)
 from for_zuhui.headline import Headline
-from for_zuhui.logic import Color, getSentimentTexts, loadHeadlinesWithSource
+from for_zuhui.logic import (
+    Color,
+    loadHeadlinesWithSource,
+)
 from for_zuhui.nlp_processors import (
     getNLPIsStop,
     getNLPLemma,
@@ -11,6 +19,7 @@ from for_zuhui.nlp_processors import (
     getNLPSentiment,
     getNLPShape,
     getNLPTag,
+    getSentimentTexts,
 )
 from for_zuhui.sourceline import SourceLine
 from for_zuhui.text_animations import (
@@ -20,6 +29,7 @@ from for_zuhui.text_animations import (
     StaggerInAnimation,
     ToSpecificPartsAnimation,
 )
+from for_zuhui.text_modifiers import clearText, displayTextPolarity
 from for_zuhui.timeline import ParallelAnimations, Timeline
 from for_zuhui.window import Window
 
@@ -67,24 +77,47 @@ timeline.addAnimation(
     )
 )
 timeline.addAnimation(ShowRenderableAnimation(sourcelinePing, 250))
-timeline.wait(2000)
-timeline.addAnimation(SequentialPartReplaceAnimation(headlinePong, getNLPShape, 150))
-timeline.wait(2000)
-timeline.addAnimation(SequentialPartReplaceAnimation(headlinePong, getNLPLemma, 150))
-timeline.wait(2000)
-timeline.addAnimation(SequentialPartReplaceAnimation(headlinePong, getNLPPos, 150))
-timeline.wait(2000)
-timeline.addAnimation(SequentialPartReplaceAnimation(headlinePong, getNLPTag, 150))
-timeline.wait(2000)
-timeline.addAnimation(SequentialPartReplaceAnimation(headlinePong, getNLPIsStop, 150))
-timeline.wait(2000)
+timeline.wait(ANIMATIONS_DELAY)
 timeline.addAnimation(
-    SequentialPartReplaceAnimation(headlinePong, [getNLPShape, getNLPLemma], 150, False)
+    SequentialPartReplaceAnimation(headlinePong, getNLPShape, WORD_ANIMATION_DELAY)
 )
-timeline.wait(2000)
-timeline.addAnimation(ToSpecificPartsAnimation(headlinePong, getSentimentTexts, 150))
-timeline.wait(2000)
-timeline.addAnimation(ListSentimentRatingsAnimation(headlinePong, getNLPSentiment, 150))
+timeline.wait(ANIMATIONS_DELAY)
+timeline.addAnimation(
+    SequentialPartReplaceAnimation(headlinePong, getNLPLemma, WORD_ANIMATION_DELAY)
+)
+timeline.wait(ANIMATIONS_DELAY)
+timeline.addAnimation(
+    SequentialPartReplaceAnimation(headlinePong, getNLPPos, WORD_ANIMATION_DELAY)
+)
+timeline.wait(ANIMATIONS_DELAY)
+timeline.addAnimation(
+    SequentialPartReplaceAnimation(headlinePong, getNLPTag, WORD_ANIMATION_DELAY)
+)
+timeline.wait(ANIMATIONS_DELAY)
+timeline.addAnimation(
+    SequentialPartReplaceAnimation(headlinePong, getNLPIsStop, WORD_ANIMATION_DELAY)
+)
+timeline.wait(ANIMATIONS_DELAY)
+
+# the False makes sure that the final resulting phrase has the same length as the original phrase
+# this is needed so that the ToSpecificPartsAnimation can work properly, since it relies on the length of the original phrase to determine which parts to replace
+timeline.addAnimation(
+    SequentialPartReplaceAnimation(
+        headlinePong, [getNLPShape, getNLPLemma], WORD_ANIMATION_DELAY, False
+    )
+)
+timeline.wait(ANIMATIONS_DELAY)
+timeline.addAnimation(
+    ToSpecificPartsAnimation(headlinePong, getSentimentTexts, WORD_ANIMATION_DELAY)
+)
+timeline.wait(ANIMATIONS_DELAY)
+timeline.addAnimation(
+    ListSentimentRatingsAnimation(headlinePong, getNLPSentiment, WORD_ANIMATION_DELAY)
+)
+timeline.wait(ANIMATIONS_DELAY)
+timeline.action(lambda: displayTextPolarity(headlinePong))
+timeline.wait(ANIMATIONS_DELAY)
+timeline.action(lambda: clearText(headlinePong))
 
 
 def loop(dt: float) -> None:

@@ -35,6 +35,19 @@ def getNLPSentiment(text: str) -> list[tuple[list[str], float, float, str]]:
     return doc._.blob.sentiment_assessments.assessments
 
 
+def getSentimentTexts(
+    text: str,
+) -> list[list[str]]:
+    sentiments = getNLPSentiment(text)
+    return [sentiment[0] for sentiment in sentiments]
+
+
+def getNLPPolarity(text: str) -> str:
+    doc = nlp(text)
+    polarity = doc._.blob.polarity
+    return f"{polarity:.2f}"
+
+
 # check what turn 7 does
 
 

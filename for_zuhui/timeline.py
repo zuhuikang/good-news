@@ -1,15 +1,22 @@
+from __future__ import annotations
+
 from abc import ABC, abstractmethod
-from typing import Sequence
+from typing import Callable, Sequence
+
+TimelineAction = Callable[[], None]
 
 
 class Timeline:
     def __init__(self):
-        self.animations: list[Animation] = []
+        self.animations: list[Animation | TimelineAction] = []
         self.currentTime = 0
         self.currentAnimationIndex = 0
 
-    def addAnimation(self, animation: Animation):
+    def addAnimation(self, animation: Animation | TimelineAction):
         self.animations.append(animation)
+
+    def action(self, action: TimelineAction):
+        self.animations.append(action)
 
     def wait(self, delayMs: int):
         self.addAnimation(DelayAnimation(delayMs))
@@ -22,7 +29,21 @@ class Timeline:
         if self.currentAnimationIndex >= len(self.animations):
             return
 
+        # Execute any immediate actions at the current position.
+        while self.currentAnimationIndex < len(self.animations):
+            step = self.animations[self.currentAnimationIndex]
+            if isinstance(step, Animation):
+                break
+            step()
+            self.currentAnimationIndex += 1
+
+        if self.currentAnimationIndex >= len(self.animations):
+            return
+
         currentAnim = self.animations[self.currentAnimationIndex]
+        if not isinstance(currentAnim, Animation):
+            return
+
         if not currentAnim.started:
             currentAnim.start()
             currentAnim.started = True
@@ -31,6 +52,14 @@ class Timeline:
 
         if currentAnim.completed:
             self.currentAnimationIndex += 1
+
+            # Continue past any immediate actions after a completed animation.
+            while self.currentAnimationIndex < len(self.animations):
+                step = self.animations[self.currentAnimationIndex]
+                if isinstance(step, Animation):
+                    break
+                step()
+                self.currentAnimationIndex += 1
 
 
 class Animation(ABC):
