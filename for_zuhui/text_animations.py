@@ -52,6 +52,12 @@ class ShowRenderableAnimation(Animation):
             0, len(self._renderable.getDocument().text), dict(color=(0, 0, 0, 0))
         )
 
+    def reset(self) -> None:
+        super().reset()
+        self._renderable.getDocument().set_style(
+            0, len(self._renderable.getDocument().text), dict(color=(0, 0, 0, 0))
+        )
+
     def update(self, dt: float) -> None:
         self._currentTime += dt * 1000
         if self._currentTime >= self._delay:

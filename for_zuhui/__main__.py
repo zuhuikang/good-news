@@ -97,11 +97,7 @@ def animateNextHeadline():
 
 # all delays are in milliseconds (1000 ms = 1 second)
 
-timeline.action(
-    lambda: setTextColor(
-        [headlinePing, sourcelinePing, headlinePong], Color(0, 0, 0, 0)
-    )
-)
+timeline.action(lambda: setTextColor([headlinePing, headlinePong], Color(0, 0, 0, 0)))
 timeline.wait(1000)
 timeline.addAnimation(
     ParallelAnimations(
