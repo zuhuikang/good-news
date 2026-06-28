@@ -91,12 +91,17 @@ def animateNextHeadline():
         headlines[headlineIndex]["source"], primaryColor.get_complementary()
     )
     headlinePong.reset(headlines[headlineIndex]["title"], primaryColor)
+    setTextColor([headlinePing, headlinePong], Color(0, 0, 0, 0))
     timeline.replay()
 
 
 # all delays are in milliseconds (1000 ms = 1 second)
 
-timeline.action(lambda: setTextColor([headlinePing, headlinePong], (0, 0, 0, 0)))
+timeline.action(
+    lambda: setTextColor(
+        [headlinePing, sourcelinePing, headlinePong], Color(0, 0, 0, 0)
+    )
+)
 timeline.wait(1000)
 timeline.addAnimation(
     ParallelAnimations(

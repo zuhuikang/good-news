@@ -105,6 +105,11 @@ class ParallelAnimations(Animation):
         super().__init__()
         self.animations = animations
 
+    def reset(self) -> None:
+        super().reset()
+        for animation in self.animations:
+            animation.reset()
+
     def start(self) -> None:
         super().start()
         for animation in self.animations:
