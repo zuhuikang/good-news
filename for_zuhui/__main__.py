@@ -29,24 +29,27 @@ from for_zuhui.text_animations import (
     StaggerInAnimation,
     ToSpecificPartsAnimation,
 )
-from for_zuhui.text_modifiers import clearText, displayTextPolarity
+from for_zuhui.text_modifiers import clearText, displayTextPolarity, setTextColor
 from for_zuhui.timeline import ParallelAnimations, Timeline
 from for_zuhui.window import Window
 
 headlines = loadHeadlinesWithSource()
-primaryColor = Color(0.156, 0.233, 0.920, 1)
+primaryColor = Color()
+headlineIndex = 0
 
 headlinePing = Headline(
-    text=headlines[0]["title"],
+    text=headlines[headlineIndex]["title"],
     color=primaryColor.get_complementary(),
     renderWidth=WINDOW_WIDTH - 300,
 )
 headlinePong = Headline(
-    text=headlines[0]["title"], color=primaryColor, renderWidth=WINDOW_WIDTH - 300
+    text=headlines[headlineIndex]["title"],
+    color=primaryColor,
+    renderWidth=WINDOW_WIDTH - 300,
 )
 
 sourcelinePing = SourceLine(
-    headlines[0]["source"], color=primaryColor.get_complementary()
+    headlines[headlineIndex]["source"], color=primaryColor.get_complementary()
 )
 
 
@@ -67,9 +70,33 @@ pong = Window(
     resizable=True,
 )
 
+timeline = Timeline()
+
+
+def animateNextHeadline():
+    global headlineIndex
+    headlineIndex += 1
+
+    if headlineIndex >= len(headlines):
+        pyglet.app.exit()
+        return
+
+    primaryColor = Color()
+    ping.setColor(primaryColor)
+    pong.setColor(primaryColor.get_complementary())
+    headlinePing.reset(
+        headlines[headlineIndex]["title"], primaryColor.get_complementary()
+    )
+    sourcelinePing.reset(
+        headlines[headlineIndex]["source"], primaryColor.get_complementary()
+    )
+    headlinePong.reset(headlines[headlineIndex]["title"], primaryColor)
+    timeline.replay()
+
+
 # all delays are in milliseconds (1000 ms = 1 second)
 
-timeline = Timeline()
+timeline.action(lambda: setTextColor([headlinePing, headlinePong], (0, 0, 0, 0)))
 timeline.wait(1000)
 timeline.addAnimation(
     ParallelAnimations(
@@ -118,6 +145,7 @@ timeline.wait(ANIMATIONS_DELAY)
 timeline.action(lambda: displayTextPolarity(headlinePong))
 timeline.wait(ANIMATIONS_DELAY)
 timeline.action(lambda: clearText(headlinePong))
+timeline.action(animateNextHeadline)
 
 
 def loop(dt: float) -> None:

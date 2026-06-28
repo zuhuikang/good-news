@@ -22,6 +22,9 @@ class Window:
         self.window.push_handlers(self)
         self.content = content
 
+    def setColor(self, color: Color):
+        self.clearColor = color.get_normalized()
+
     def on_draw(self):
         glClearColor(*self.clearColor.values())
         self.window.clear()

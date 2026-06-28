@@ -46,6 +46,21 @@ class Headline(Renderable):
     def text(self):
         return self._text
 
+    def reset(self, text: str, color: Color):
+        self._text = text
+        self._color = color
+        self._headlineDoc.text = text
+        self._headlineDoc.set_style(
+            0,
+            len(text),
+            dict(
+                color=color.get_rgba(),
+                font_name=FONT_NAME,
+                font_size=HEADLINE_FONT_SIZE,
+                align="center",
+            ),
+        )
+
     def getLayout(self):
         return self._headlineTextLayout
 

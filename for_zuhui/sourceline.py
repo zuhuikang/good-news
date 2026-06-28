@@ -41,3 +41,17 @@ class SourceLine(Renderable):
 
     def getColor(self):
         return self._color
+
+    def reset(self, source: str, color: Color):
+        self._color = color
+        self._sourceDoc.text = source
+        self._sourceDoc.set_style(
+            0,
+            len(source),
+            dict(
+                color=color.get_rgba(),
+                font_name=FONT_NAME,
+                font_size=SOURCE_FONT_SIZE,
+                align="center",
+            ),
+        )

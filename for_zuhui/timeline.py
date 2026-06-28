@@ -15,6 +15,13 @@ class Timeline:
     def addAnimation(self, animation: Animation | TimelineAction):
         self.animations.append(animation)
 
+    def replay(self):
+        self.currentTime = 0
+        self.currentAnimationIndex = 0
+        for animation in self.animations:
+            if isinstance(animation, Animation):
+                animation.reset()
+
     def action(self, action: TimelineAction):
         self.animations.append(action)
 
@@ -68,6 +75,10 @@ class Animation(ABC):
         self._completed: bool = False
         self._started: bool = False
 
+    def reset(self) -> None:
+        self._completed = False
+        self._started = False
+
     @property
     def started(self) -> bool:
         return self._started
@@ -96,9 +107,16 @@ class ParallelAnimations(Animation):
 
     def start(self) -> None:
         super().start()
+        for animation in self.animations:
+            if not animation.started:
+                animation.start()
+                animation.started = True
 
     def update(self, dt: float) -> None:
         for animation in self.animations:
+            if not animation.started:
+                animation.start()
+                animation.started = True
             if not animation.completed:
                 animation.update(dt)
 
@@ -110,10 +128,9 @@ class DelayAnimation(Animation):
     def __init__(self, delayMs: int):
         super().__init__()
         self._delayMs = delayMs
-        self._currentTime = 0
 
     def start(self) -> None:
-        return super().start()
+        self._currentTime = 0
 
     def update(self, dt: float) -> None:
         self._currentTime += dt * 1000

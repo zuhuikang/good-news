@@ -11,3 +11,9 @@ def displayTextPolarity(headline: Headline):
 def clearText(headline: Headline):
     document = headline.getDocument()
     document.text = ""
+
+
+def setTextColor(headlines: list[Headline], color: tuple):
+    for headline in headlines:
+        document = headline.getDocument()
+        document.set_style(0, len(document.text), {"color": color})

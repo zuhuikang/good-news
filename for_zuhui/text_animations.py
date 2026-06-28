@@ -11,13 +11,7 @@ class StaggerInAnimation(Animation):
     def __init__(self, headline: Headline, staggerDelay: int):
         super().__init__()
         self._headline = headline
-        self._currentTime = 0
-        self._currentTextPartIndex = 0
         self._staggerDelay = staggerDelay
-        self._headlineParts = self._headline.text.split(" ")
-        self._headline.getDocument().set_style(
-            0, len(self._headline.text), dict(color=(0, 0, 0, 0))
-        )
 
     def paintPartsUntil(self, partIndex: int):
         limit = len(" ".join(self._headlineParts[: partIndex + 1]))
@@ -27,6 +21,12 @@ class StaggerInAnimation(Animation):
 
     def start(self) -> None:
         super().start()
+        self._currentTime = 0
+        self._currentTextPartIndex = 0
+        self._headlineParts = self._headline.text.split(" ")
+        self._headline.getDocument().set_style(
+            0, len(self._headline.text), dict(color=(0, 0, 0, 0))
+        )
 
     def update(self, dt: float) -> None:
         self._currentTime += dt * 1000
@@ -44,13 +44,13 @@ class ShowRenderableAnimation(Animation):
         super().__init__()
         self._renderable = renderable
         self._delay = delay
+
+    def start(self) -> None:
+        super().start()
         self._currentTime = 0
         self._renderable.getDocument().set_style(
             0, len(self._renderable.getDocument().text), dict(color=(0, 0, 0, 0))
         )
-
-    def start(self) -> None:
-        return super().start()
 
     def update(self, dt: float) -> None:
         self._currentTime += dt * 1000
@@ -76,10 +76,6 @@ class SequentialPartReplaceAnimation(Animation):
         self._replacers = replacers
         self._use_current_phrase = replaceAsIs
         self._replaceDelay = replaceDelay
-        self._currentTime = 0
-        self._parts = []
-        self._currentPartIndex = 0
-        self._mergesNeeded = 0
 
     def get_parts(self, use_current: bool = True) -> list[str]:
         if use_current:
@@ -116,6 +112,11 @@ class SequentialPartReplaceAnimation(Animation):
 
     def start(self) -> None:
         super().start()
+
+        self._currentTime = 0
+        self._parts = []
+        self._currentPartIndex = 0
+        self._mergesNeeded = 0
 
         if isinstance(self._replacers, list):
             self._replacementParts = self._build_replacement_parts(
@@ -174,14 +175,8 @@ class ToSpecificPartsAnimation(Animation):
     ) -> None:
         super().__init__()
         self._headline = headline
-        self._currentTime = 0
+        self._getParts = getParts
         self._animDelay = animDelay
-        self._parts = []
-        self._hiddenIndices: set[int] = set()
-        self._headlineParts = self._headline.text.split(" ")
-        self._sentimentParts = getParts(self._headline.text)
-        self._desiredIndicies = self.get_desired_part_indicies()
-        self._currentPartIndex = 0
 
     def get_desired_part_indicies(self) -> set[int]:
         desiredParts = set()
@@ -196,6 +191,13 @@ class ToSpecificPartsAnimation(Animation):
 
     def start(self) -> None:
         super().start()
+        self._parts = []
+        self._currentTime = 0
+        self._hiddenIndices: set[int] = set()
+        self._headlineParts = self._headline.text.split(" ")
+        self._sentimentParts = self._getParts(self._headline.text)
+        self._desiredIndicies = self.get_desired_part_indicies()
+        self._currentPartIndex = 0
         self._parts = self._headline.getDocument().text.split(" ")
         if len(self._parts) != len(self._headlineParts):
             raise ValueError(
@@ -266,10 +268,7 @@ class ListSentimentRatingsAnimation(Animation):
         super().__init__()
         self._headline = headline
         self._getSentiments = getSentiments
-        self._sentimentPhrases: list[str] = []
         self._itemDelay = itemDelay
-        self._currentTime = 0
-        self._currentPhraseIndex = 0
 
     def _build_sentiment_phrases(self, text: str) -> list[str]:
         sentiments = self._getSentiments(text)
@@ -279,6 +278,9 @@ class ListSentimentRatingsAnimation(Animation):
 
     def start(self) -> None:
         super().start()
+        self._sentimentPhrases: list[str] = []
+        self._currentTime = 0
+        self._currentPhraseIndex = 0
         self._sentimentPhrases = self._build_sentiment_phrases(self._headline.text)
         document = self._headline.getDocument()
 
